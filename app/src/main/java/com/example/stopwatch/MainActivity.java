@@ -2,6 +2,7 @@ package com.example.stopwatch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     boolean stopSlotCheck2 = false;
     boolean stopSlotCheck3 = false;
     boolean slotMachineActive = false;
+    boolean slotMachineActive2 = false;
 
     CountEvent event;
     Handler handler;
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     i = 0;
                     button.setText("Start");
                     buttonStopSlot.setText("Stop first slot");
+                    slotMachineActive2 = false;
                 }
             }
         });
@@ -174,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                             t.show();
                         }
                         slotMachineActive = false;
+                        slotMachineActive2 = false;
                     }
                     i++;
                 }
@@ -203,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            slotMachineActive2 = true;
             if(counting.equals("Up")) {
                 if(stopSlotCheck1 == false) {
                     if(time == 1) {
@@ -278,5 +283,43 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle saveInstanceState) {
         saveInstanceState.putInt("time", time);
         super.onSaveInstanceState(saveInstanceState);
+    }
+
+    @Override
+    public  void onPause() {
+        super.onPause();
+        updateSharedPreferences();
+    }
+
+    @Override
+    public void onResume() { // called whenever the user changes
+        super.onResume();
+        SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
+        slotMachineActive2 = sp.getBoolean("slot machine check", false);
+        time = sp.getInt("time", 0);
+        time2 = sp.getInt("time2", 0);
+        time3 = sp.getInt("time3", 0);
+
+        if(slotMachineActive2 == true) {
+            handler.postDelayed(event, speed);
+            button.setText("Reset");
+
+            stopSlotCheck1 = false;
+            stopSlotCheck2 = false;
+            stopSlotCheck3 = false;
+            slotMachineActive = true;
+            i = 0;
+        }
+
+    }
+
+    private void updateSharedPreferences() {
+        SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("slot machine check", slotMachineActive2);
+        editor.putInt("time", time);
+        editor.putInt("time2", time2);
+        editor.putInt("time3", time3);
+        editor.commit();
     }
 }
