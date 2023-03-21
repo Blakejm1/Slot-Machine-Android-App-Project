@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //timeView = findViewById(R.id.timeView);
-        //timeView2 = findViewById(R.id.timeView2);
-        //timeView3 = findViewById(R.id.timeView3);
         button = findViewById(R.id.button);
         buttonStopSlot = findViewById(R.id.stopSlotButton);
         seekBarSpeed = findViewById(R.id.seekBarSpeed);
@@ -87,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
             time = savedInstanceState.getInt("time");
             time2 = savedInstanceState.getInt("time2");
             time3 = savedInstanceState.getInt("time3");
-            //timeView.setText(time+"");
-            //timeView2.setText(time2+"");
-            //timeView3.setText(time3+"");
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     handler.removeCallbacks(event);
-                    //timeView.setText(0 + "");
-                    //timeView2.setText(0 + "");
-                    //timeView3.setText(0 + "");
                     slotImage.setImageDrawable(cherry);
                     slotImage2.setImageDrawable(cherry);
                     slotImage3.setImageDrawable(cherry);
@@ -256,9 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            //timeView.setText(time + "");
-            //timeView2.setText(time2 + "");
-            //timeView3.setText(time3 + "");
             handler.postDelayed(event, speed);
 
             if(stopSlotCheck1 == false) {
